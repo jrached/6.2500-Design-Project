@@ -1,0 +1,9 @@
+EDP original -> 388.874 pJ*ns
+clock freq -> 161 MHz
+
+With t_ox -> t_ox/2:
+I_ON = 1230
+I_OFF = 800
+V = 1.8
+C_GS = 1.83
+
