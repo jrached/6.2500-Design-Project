@@ -3,17 +3,18 @@
 ; *		* t_ox incremented by 10%
 ; *		* source and drain extension lengths (t_s) incremented by 5%
 ; *		* drain voltage V_DD incremented to 3V
+; *		* drain and source extension concentrations reduced to 1e19
 ; ***********************************************************************************************
 ; * MOSFET PARAMETERS AND METRICS:
-; * 	* On Current [µA/µm] = 833.00
-; * 	* Off Current [nA/µm] = 0.27
+; * 	* On Current [µA/µm] = 896.00
+; * 	* Off Current [nA/µm] = 8.16
 ; *		* Supply VDD [V] = 3.000
 ; *		* Cgs (Normalized) = 0.916
-; *		* Leakage Energy [pJ] = 0.031
+; *		* Leakage Energy [pJ] = 0.891
 ; *		* Dynamic Energy [pJ] = 19.914
-; *		* TOTAL Energy [pJ] = 19.945
-; * 	* Clock Frequency [GHz] = 0.210
-; *		* EDP [pJ⋅ns] = 94.831
+; *		* TOTAL Energy [pJ] = 20.804
+; * 	* Clock Frequency [GHz] = 0.226
+; *		* EDP [pJ⋅ns] = 92.069
 ; ***********************************************************************************************
 
 ;; Setting Parameters:
@@ -98,13 +99,13 @@
 (sdedr:define-constant-profile "constant_channel_doping" "BoronActiveConcentration" 3e18)
 (sdedr:define-constant-profile-region "constant_channel_doping_placement" "constant_channel_doping" "channel")
 ;; drain extension doping:
-(sdedr:define-constant-profile "constant_drain_ext_doping" "PhosphorusActiveConcentration" 5e+18)
+(sdedr:define-constant-profile "constant_drain_ext_doping" "PhosphorusActiveConcentration" 1e+19)
 (sdedr:define-constant-profile-region "constant_drain_ext_doping_placement" "constant_drain_ext_doping" "drain_n_ext")
 ;; drain doping:
 (sdedr:define-constant-profile "constant_drain_doping" "PhosphorusActiveConcentration" 5e+19)
 (sdedr:define-constant-profile-region "constant_drain_doping_placement" "constant_drain_doping" "drain_n")
 ;; source extension doping:
-(sdedr:define-constant-profile "constant_source_ext_doping" "PhosphorusActiveConcentration" 5e+19)
+(sdedr:define-constant-profile "constant_source_ext_doping" "PhosphorusActiveConcentration" 1e+19)
 (sdedr:define-constant-profile-region "constant_source_ext_doping_placement" "constant_source_ext_doping" "source_n_ext")
 ;; source doping:
 (sdedr:define-constant-profile "constant_source_doping" "PhosphorusActiveConcentration" 5e+19)
