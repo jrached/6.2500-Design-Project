@@ -1,8 +1,19 @@
 ; ***********************************************************************************************
 ; * CHANGES MADE:
-; *		* t_ox incremented by 30%
+; *		* t_ox incremented by 10%
 ; *		* source and drain extension lengths (t_s) incremented by 5%
 ; *		* drain voltage V_DD incremented to 3V
+; ***********************************************************************************************
+; * MOSFET PARAMETERS AND METRICS:
+; * 	* On Current [µA/µm] = 833.00
+; * 	* Off Current [nA/µm] = 0.27
+; *		* Supply VDD [V] = 3.000
+; *		* Cgs (Normalized) = 0.916
+; *		* Leakage Energy [pJ] = 0.031
+; *		* Dynamic Energy [pJ] = 19.914
+; *		* TOTAL Energy [pJ] = 19.945
+; * 	* Clock Frequency [GHz] = 0.210
+; *		* EDP [pJ⋅ns] = 94.831
 ; ***********************************************************************************************
 
 ;; Setting Parameters:
@@ -37,11 +48,11 @@
 ; *		  with a region material and a name assigned. The first coordinate is on y (horizontal),
 ; * 	  the second coordinate is on x (vertical)
 ; ***********************************************************************************************
-(define kappa 1.3)                              		; scaling factor
+(define kappa 1.1)                              		; scaling factor
 (define channel_start 0)   								; start of channel
 (define channel_end 0.035)    							; end of channel
 (define t_ox_height (* -1 (* 0.005 kappa)))				; thickness of oxide
-(define start_s_ext (* -0.035 1.05))					; start of the source extension
+(define start_s_ext (* -0.035 1.05))						; start of the source extension
 (define end_d_ext (+ 0.035 (* 0.035 1.05)))				; end of the drain extension
 
 ;; silicon channel:

@@ -1,8 +1,6 @@
 ;; Setting Parameters:
 
-
 ;; Defined Parameters:
-
 
 ;; Contact Sets:
 
@@ -36,8 +34,8 @@
 (define channel_start 0)   								; start of channel
 (define channel_end 0.035)    							; end of channel
 (define t_ox_height (* -1 (* 0.005 kappa)))				; thickness of oxide
-(define start_s_ext (* -0.035 1.05))
-(define end_d_ext (+ 0.035 (* 0.035 1.05)))
+(define start_s_ext (* -0.035 1.05))					; start of the source extension
+(define end_d_ext (+ 0.035 (* 0.035 1.05)))				; end of the drain extension
 
 ;; silicon channel:
 (sdegeo:create-rectangle (position channel_start 0 0.0 )  (position channel_end 0.035 0.0 ) "Silicon" "channel" )
@@ -106,13 +104,13 @@
 (sdedr:define-constant-profile-region "constant_source_doping_placement" "constant_source_doping" "source_n")
 ;; body doping:
 (sdedr:define-constant-profile "constant_body_doping" "BoronActiveConcentration" 5e+19)
+(sdedr:define-constant-profile-region "constant_body_doping_placement" "constant_body_doping" "body")
 ;(sdedr:define-constant-profile-region "constant_body1_doping_placement" "constant_body_doping" "body1")
 ;(sdedr:define-constant-profile-region "constant_body2_doping_placement" "constant_body_doping" "body2")
 ;(sdedr:define-constant-profile-region "constant_body_left_halo_doping_placement" "constant_body_doping" "body_left_halo")
 ;(sdedr:define-constant-profile-region "constant_body_right_halo_doping_placement" "constant_body_doping" "body_right_halo")
-(sdedr:define-constant-profile-region "constant_body_doping_placement" "constant_body_doping" "body")
-(sdedr:define-constant-profile-region "constant_body_s_extension_doping_placement" "constant_body_doping" "body_s_extension")
-(sdedr:define-constant-profile-region "constant_body_d_extension_doping_placement" "constant_body_doping" "body_d_extension")
+;(sdedr:define-constant-profile-region "constant_body_s_extension_doping_placement" "constant_body_doping" "body_s_extension")
+;(sdedr:define-constant-profile-region "constant_body_d_extension_doping_placement" "constant_body_doping" "body_d_extension")
 ;; halo doping:
 ;(sdedr:define-constant-profile "constant_halo_doping" "BoronActiveConcentration" 5e+20)
 ;(sdedr:define-constant-profile-region "constant_halo_doping_placement" "constant_halo_doping" "halo")
