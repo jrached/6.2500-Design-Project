@@ -115,7 +115,7 @@ Changes made so far:
 (sdedr:define-constant-profile "constant_source_doping" "PhosphorusActiveConcentration" 5e+19)
 (sdedr:define-constant-profile-region "constant_source_doping_placement" "constant_source_doping" "source_n")
 ;; body doping:
-(sdedr:define-constant-profile "constant_body_doping" "BoronActiveConcentration" 4e+19) ;5e+19 ;4.5e19
+(sdedr:define-constant-profile "constant_body_doping" "BoronActiveConcentration" 4e+14) ;5e+19 ;4.5e19
 (sdedr:define-constant-profile-region "constant_body_doping_placement" "constant_body_doping" "body")
 
 ;; define contacts

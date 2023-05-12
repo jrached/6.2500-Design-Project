@@ -34,14 +34,14 @@
 ; ***********************************************************************************************
 #|
 Changes made so far:
-	* reduced channel length by 60%
-	* reduced gate length by 61.5%
+	* reduced channel length by 60% (14nm)
+	* reduced gate length by 61.5% (13.475nm)
 	* changed gate oxide material to HfO2
 	* change spacer materials to vacuum
-	* increased concentration of the channel to 2.5e19
+	* increased concentration of the channel to 2.5e+19
 	* decreased voltage supplied to 0.76 V
 	* t_ox reduced to 4nm
-	* source and drain extension concentrations decreased to 1e19
+	* source and drain extension concentrations decreased to 1.5e+19
 |#
 (define kappa 0.8)                              					; scaling factor t_ox
 (define alpha 0.4)													; scaling factor channel length L
@@ -100,7 +100,7 @@ Changes made so far:
 ; * 	  and the exact concentration.
 ; ***********************************************************************************************
 ;; channel doping:
-(sdedr:define-constant-profile "constant_channel_doping" "BoronActiveConcentration" 2.5e+19) ;2.5e+19
+(sdedr:define-constant-profile "constant_channel_doping" "BoronActiveConcentration" 2.5e+19) 
 (sdedr:define-constant-profile-region "constant_channel_doping_placement" "constant_channel_doping" "channel")
 ;; drain extension doping:
 (sdedr:define-constant-profile "constant_drain_ext_doping" "PhosphorusActiveConcentration" 1.5e+20)
@@ -115,7 +115,7 @@ Changes made so far:
 (sdedr:define-constant-profile "constant_source_doping" "PhosphorusActiveConcentration" 5e+19)
 (sdedr:define-constant-profile-region "constant_source_doping_placement" "constant_source_doping" "source_n")
 ;; body doping:
-(sdedr:define-constant-profile "constant_body_doping" "BoronActiveConcentration" 4e+19) ;5e+19 ;4.5e19
+(sdedr:define-constant-profile "constant_body_doping" "BoronActiveConcentration" 4e+19) 
 (sdedr:define-constant-profile-region "constant_body_doping_placement" "constant_body_doping" "body")
 
 ;; define contacts
