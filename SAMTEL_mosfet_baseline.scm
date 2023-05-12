@@ -1,6 +1,8 @@
 ;; Setting Parameters:
 
+
 ;; Defined Parameters:
+
 
 ;; Contact Sets:
 
@@ -21,7 +23,7 @@
 (sde:clear)
 
 (sdegeo:set-default-boolean "ABA")
-
+	
 
 ; ***********************************************************************************************
 ; * DIMENSIONS OF THE MOSFET
@@ -30,21 +32,44 @@
 ; *		  with a region material and a name assigned. The first coordinate is on y (horizontal),
 ; * 	  the second coordinate is on x (vertical)
 ; ***********************************************************************************************
-(define kappa 1.1)                              		; scaling factor
-(define channel_start 0.0)   							; start of channel
-(define channel_end 0.035)    							; end of channel
-(define t_ox_height (* -1 (* 0.005 kappa)))				; thickness of oxide
-(define start_s_ext (* -0.035 1.05))					; start of the source extension
-(define end_d_ext (+ 0.035 (* 0.035 1.05)))				; end of the drain extension
-(define height_terminal (* 0.035 1))					; height of drain and source and channel
-(define height_channel (+ height_terminal (* 0.035 0.5)))			; height of channel and extensions
+#|
+Changes made so far:
+	* reduced channel length by 60%
+	* reduced gate length by 61.5%
+	* changed gate oxide material to HfO2
+	* change spacer materials to vacuum
+	* increased concentration of the channel to 2.5e19
+	* decreased voltage supplied to 0.75V
+	* t_ox reduced to 4nm
+|#
+(define kappa 0.8)                              					; scaling factor t_ox
+(define alpha 0.4)													; scaling factor channel length L
+(define beta 1)														; scaling factor drain and source spacers
+(define gamma 1)													; scaling factor channel depth
+(define omega 0.385)												; scaling factor gate length L_ox
+(define psi 1)														; scaling factor drain and source extension
+(define channel_start (/ (- 0.035 (* 0.035 alpha)) 2))   			; start of channel
+(define channel_end (- 0.035 (/ (- 0.035 (* 0.035 alpha)) 2)))    	; end of channel
+(define gate_start (/ (- 0.035 (* 0.035 omega)) 2))   				; start of channel
+(define gate_end (- 0.035 (/ (- 0.035 (* 0.035 omega)) 2)))    		; end of channel
+(define t_ox_height (* -1 (* 0.005 kappa)))							; thickness of oxide
+(define start_s_sp (+ gate_start (* -0.035 beta)))					; start of the spacer spacer
+(define end_d_sp (+ gate_end (* 0.035 beta)))						; end of the drain spacer
+(define start_s_ext (+ channel_start (* -0.035 psi)))				; start of the source extension
+(define end_d_ext (+ channel_end (* 0.035 psi)))					; end of the drain extension
+(define height_terminal (* 0.035 gamma))							; height of channel
 
 ;; silicon channel:
-(sdegeo:create-rectangle (position channel_start 0 0.0 )  (position channel_end height_terminal 0.0 ) "Silicon" "channel" )
+(sdegeo:create-rectangle (position channel_start 0 0.0 )  (position channel_end 0.035 0.0 ) "Titanium" "channel" )
 ;; gate oxide:
-(sdegeo:create-rectangle (position channel_start 0 0 )  (position channel_end t_ox_height 0 ) "SiO2" "gate_oxide" )
-;; Gate metal electrode:
-(sdegeo:create-rectangle (position channel_start t_ox_height 0 )  (position channel_end -0.05 0 ) "Aluminum" "gate_electrode" )
+(sdegeo:create-rectangle (position gate_start 0 0 )  (position gate_end t_ox_height 0 ) "HfO2" "gate_oxide" )
+;; Gate metal electrode:	
+(sdegeo:create-rectangle (position gate_start t_ox_height 0 )  (position gate_end -0.05 0 ) "Aluminum" "gate_electrode" )
+
+;; Body metal electrode: 
+(sdegeo:create-rectangle (position -0.07 0.6 0 )  (position 0.105 0.5 0 ) "Aluminum" "body_electrode" )
+;; body silicon:
+(sdegeo:create-rectangle (position -.07 .5 0 )  (position .105 height_terminal 0 ) "Silicon" "body" )
 
 ;; Source metal electrode:
 (sdegeo:create-rectangle (position -0.07 0 0 )  (position start_s_ext -0.05 0 ) "Aluminum" "source_electrode" )
@@ -52,7 +77,7 @@
 (sdegeo:create-rectangle (position -0.07 height_terminal 0 )  (position start_s_ext 0 0 ) "Silicon" "source_n" )
 
 ;; spacer oxide between metal gate and metal source:
-(sdegeo:create-rectangle (position channel_start 0 0 )  (position start_s_ext -0.05 0 ) "HfO2" "spacerL" )
+(sdegeo:create-rectangle (position gate_start 0 0 )  (position start_s_sp -0.05 0 ) "Vacuum" "spacerL" )
 ;; silicon between silicon under source metal and silicon channel, called source extension:
 (sdegeo:create-rectangle (position start_s_ext height_terminal 0 )  (position channel_start 0 0 ) "Silicon" "source_n_ext" )
 
@@ -62,23 +87,10 @@
 (sdegeo:create-rectangle (position end_d_ext height_terminal 0 )  (position 0.105 0 0 ) "Silicon" "drain_n" )
 
 ;; spacer oxide between metal gate and metal drain:
-(sdegeo:create-rectangle (position channel_end 0 0 )  (position end_d_ext -0.05 0 ) "HfO2" "spacerR" )
+(sdegeo:create-rectangle (position gate_end 0 0 )  (position end_d_sp -0.05 0 ) "Vacuum" "spacerR" )
 ;; silicon between silicon under drain metal and silicon channel, called drain extension:
 (sdegeo:create-rectangle (position channel_end height_terminal 0 )  (position end_d_ext 0 0 ) "Silicon" "drain_n_ext" )
 
-;; Body metal electrode: 
-(sdegeo:create-rectangle (position -0.07 0.6 0 )  (position 0.105 0.5 0 ) "Aluminum" "body_electrode" )
-;; body silicon:
-(sdegeo:create-rectangle (position -.07 .5 0 )  (position .105 height_terminal 0 ) "Silicon" "body" )
-
-;; channel retrograde + halo
-;(sdegeo:create-rectangle (position channel_start height_channel 0.0 )  (position channel_end height_terminal 0.0 ) "Silicon" "channel_retrograde" )
-;(sdegeo:create-rectangle (position channel_start 0 0.0 )  (position channel_end (/ height_terminal 1.5) 0.0 ) "Silicon" "channel_retrograde" )
-;(sdegeo:create-rectangle (position (/ start_s_ext 1.5) height_terminal 0 )  (position channel_start (/ height_terminal 1.5) 0 ) "Silicon" "halo_source" )
-;(sdegeo:create-rectangle (position (- start_s_ext 0.01) height_terminal 0 )  (position channel_start (+ height_terminal 0.01) 0 ) "Silicon" "halo_source_ext" )
-;(sdegeo:create-rectangle (position channel_end height_terminal 0 )  (position (+ channel_end (/ (- end_d_ext channel_end) 1.5)) (/ height_terminal 1.5) 0 ) "Silicon" "halo_drain" )
-;(sdegeo:create-rectangle (position channel_end height_terminal 0 )  (position (+ end_d_ext 0.01) (+ height_terminal 0.01) 0 ) "Silicon" "halo_drain_ext" )
-;(sdegeo:create-elliptical-sheet (position (/ 0.035 2) 0.065 0) (position 0.07 0.065 0) 0.45 "Silicon" "superhalo")
 
 ; ***********************************************************************************************
 ; * ASSIGNMENT OF THE DOPING OF SECTIONS OF THE MOSFET
@@ -87,36 +99,25 @@
 ; * 	  and the exact concentration.
 ; ***********************************************************************************************
 ;; channel doping:
-(sdedr:define-constant-profile "constant_channel_doping" "BoronActiveConcentration" 1e20)
+(sdedr:define-constant-profile "constant_channel_doping" "BoronActiveConcentration" 2.5e+19) ;2.5e+19
 (sdedr:define-constant-profile-region "constant_channel_doping_placement" "constant_channel_doping" "channel")
 ;; drain extension doping:
-(sdedr:define-constant-profile "constant_drain_ext_doping" "PhosphorusActiveConcentration" 1e+19)
+(sdedr:define-constant-profile "constant_drain_ext_doping" "PhosphorusActiveConcentration" 1e+20)
 (sdedr:define-constant-profile-region "constant_drain_ext_doping_placement" "constant_drain_ext_doping" "drain_n_ext")
 ;; drain doping:
-(sdedr:define-constant-profile "constant_drain_doping" "PhosphorusActiveConcentration" 1e+20)
+(sdedr:define-constant-profile "constant_drain_doping" "PhosphorusActiveConcentration" 5e+19)
 (sdedr:define-constant-profile-region "constant_drain_doping_placement" "constant_drain_doping" "drain_n")
 ;; source extension doping:
-(sdedr:define-constant-profile "constant_source_ext_doping" "PhosphorusActiveConcentration" 1e+19)
+(sdedr:define-constant-profile "constant_source_ext_doping" "PhosphorusActiveConcentration" 1e+20)
 (sdedr:define-constant-profile-region "constant_source_ext_doping_placement" "constant_source_ext_doping" "source_n_ext")
 ;; source doping:
-(sdedr:define-constant-profile "constant_source_doping" "PhosphorusActiveConcentration" 1e+20)
+(sdedr:define-constant-profile "constant_source_doping" "PhosphorusActiveConcentration" 5e+19)
 (sdedr:define-constant-profile-region "constant_source_doping_placement" "constant_source_doping" "source_n")
 ;; body doping:
-(sdedr:define-constant-profile "constant_body_doping" "BoronActiveConcentration" 5e+19)
+(sdedr:define-constant-profile "constant_body_doping" "BoronActiveConcentration" 5e+19) ;5e+19
 (sdedr:define-constant-profile-region "constant_body_doping_placement" "constant_body_doping" "body")
-;; channel retrograde/halo doping:
-(sdedr:define-constant-profile "constant_retrograde_doping" "BoronActiveConcentration" 1e+20)
-;(sdedr:define-constant-profile-region "constant_channel_retrograde_doping_placement" "constant_retrograde_doping" "channel_retrograde")
-(sdedr:define-constant-profile-region "constant_halo_source_doping_placement" "constant_retrograde_doping" "halo_source")
-(sdedr:define-constant-profile-region "constant_halo_drain_doping_placement" "constant_retrograde_doping" "halo_drain")
-(sdedr:define-constant-profile-region "constant_halo_source_ext_doping_placement" "constant_retrograde_doping" "halo_source_ext")
-(sdedr:define-constant-profile-region "constant_halo_drain_ext_doping_placement" "constant_retrograde_doping" "halo_drain_ext")
-;(sdedr:define-constant-profile-region "constant_superhalo_doping_placement" "constant_retrograde_doping" "superhalo")
-
-(sdedr:define-constant-profile "constant_retrograde1_doping" "BoronActiveConcentration" 3e+15)
-(sdedr:define-constant-profile-region "constant_channel_retrograde_doping_placement" "constant_retrograde1_doping" "channel_retrograde")
-
-
+;(sdedr:define-constant-profile "constant_body2_doping" "BoronActiveConcentration" 5e+19) ;5e+19
+;(sdedr:define-constant-profile-region "constant_body_doping_placement" "constant_body2_doping" "body2")
 
 ;; define contacts
 (sdegeo:define-contact-set "Gate_contact" 4  (color:rgb 1 0 0 ) "##" )
@@ -126,7 +127,7 @@
 
 ;; assign location of contacts
 (sdegeo:set-current-contact-set "Gate_contact")
-(sdegeo:set-contact-boundary-edges (list (car (find-body-id (position 0.02 -0.04 0)))) "Gate_contact")
+(sdegeo:set-contact-boundary-edges (list (car (find-body-id (position 0.0175 -0.04 0)))) "Gate_contact")
 (sdegeo:set-current-contact-set "Source_contact")
 (sdegeo:set-contact-boundary-edges (list (car (find-body-id (position -.06 -0.04 0)))) "Source_contact")
 (sdegeo:set-current-contact-set "Drain_contact")
@@ -142,7 +143,7 @@
 (sdedr:define-refinement-placement "RefinementPlacement_1" "RefinementDefinition_1" "RefWin_1" )
 ;; define and set the bottom mesh, everything below the surface of the silicon:
 (sdedr:define-refeval-window "RefWin_2" "Rectangle"  (position -0.07 .6 0) (position 0.105 0 0))
-(sdedr:define-multibox-size "MultiboxDefinition_1" 0.05 0.03 .03 .0002 1 1.35 )
+(sdedr:define-multibox-size "MultiboxDefinition_1" 0.05 0.03 .0003 .0002 1 1.35 )
 (sdedr:define-multibox-placement "MultiboxPlacement_1" "MultiboxDefinition_1" "RefWin_2" )
 ;; define and set the mesh over the channel:
 (sdedr:define-refinement-size "RefinementDefinition_2" 0.002 .005 .0000001 0.0000002 )
