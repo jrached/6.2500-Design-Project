@@ -10,7 +10,7 @@ Output = "Si_MOSFET_def.log"
 }
 
 Electrode {
-{ Name="Drain_contact" Voltage=3.0 } * CHANGE THIS TO SET VDD
+{ Name="Drain_contact" Voltage=0.76 } * CHANGE THIS TO SET VDD
 { Name="Source_contact" Voltage=0.0 } 
 { Name="Gate_contact" Voltage=0.0 }
 { Name="Body_contact" Voltage=0.0 }
@@ -36,6 +36,6 @@ Coupled{ Poisson Electron Hole }
 Quasistationary(
 InitialStep=0.001 Increment=1.1
 MinStep=1e-5 MaxStep=0.05
-Goal{ Name="Gate_contact" Voltage=3.0 } *CHANGE THIS TO SET VDD
+Goal{ Name="Gate_contact" Voltage=0.76 } *CHANGE THIS TO SET VDD
 ){ Coupled{ Poisson Electron Hole }}
 } 

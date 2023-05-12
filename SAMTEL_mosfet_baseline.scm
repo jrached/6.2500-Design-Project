@@ -39,8 +39,9 @@ Changes made so far:
 	* changed gate oxide material to HfO2
 	* change spacer materials to vacuum
 	* increased concentration of the channel to 2.5e19
-	* decreased voltage supplied to 0.75V
+	* decreased voltage supplied to 0.76 V
 	* t_ox reduced to 4nm
+	* source and drain extension concentrations decreased to 1e19
 |#
 (define kappa 0.8)                              					; scaling factor t_ox
 (define alpha 0.4)													; scaling factor channel length L
@@ -60,7 +61,7 @@ Changes made so far:
 (define height_terminal (* 0.035 gamma))							; height of channel
 
 ;; silicon channel:
-(sdegeo:create-rectangle (position channel_start 0 0.0 )  (position channel_end 0.035 0.0 ) "Titanium" "channel" )
+(sdegeo:create-rectangle (position channel_start 0 0.0 )  (position channel_end 0.035 0.0 ) "Silicon" "channel" )
 ;; gate oxide:
 (sdegeo:create-rectangle (position gate_start 0 0 )  (position gate_end t_ox_height 0 ) "HfO2" "gate_oxide" )
 ;; Gate metal electrode:	
@@ -90,7 +91,7 @@ Changes made so far:
 (sdegeo:create-rectangle (position gate_end 0 0 )  (position end_d_sp -0.05 0 ) "Vacuum" "spacerR" )
 ;; silicon between silicon under drain metal and silicon channel, called drain extension:
 (sdegeo:create-rectangle (position channel_end height_terminal 0 )  (position end_d_ext 0 0 ) "Silicon" "drain_n_ext" )
-
+	
 
 ; ***********************************************************************************************
 ; * ASSIGNMENT OF THE DOPING OF SECTIONS OF THE MOSFET
@@ -102,22 +103,20 @@ Changes made so far:
 (sdedr:define-constant-profile "constant_channel_doping" "BoronActiveConcentration" 2.5e+19) ;2.5e+19
 (sdedr:define-constant-profile-region "constant_channel_doping_placement" "constant_channel_doping" "channel")
 ;; drain extension doping:
-(sdedr:define-constant-profile "constant_drain_ext_doping" "PhosphorusActiveConcentration" 1e+20)
+(sdedr:define-constant-profile "constant_drain_ext_doping" "PhosphorusActiveConcentration" 1.5e+20)
 (sdedr:define-constant-profile-region "constant_drain_ext_doping_placement" "constant_drain_ext_doping" "drain_n_ext")
 ;; drain doping:
 (sdedr:define-constant-profile "constant_drain_doping" "PhosphorusActiveConcentration" 5e+19)
 (sdedr:define-constant-profile-region "constant_drain_doping_placement" "constant_drain_doping" "drain_n")
 ;; source extension doping:
-(sdedr:define-constant-profile "constant_source_ext_doping" "PhosphorusActiveConcentration" 1e+20)
+(sdedr:define-constant-profile "constant_source_ext_doping" "PhosphorusActiveConcentration" 1.5e+20)
 (sdedr:define-constant-profile-region "constant_source_ext_doping_placement" "constant_source_ext_doping" "source_n_ext")
 ;; source doping:
 (sdedr:define-constant-profile "constant_source_doping" "PhosphorusActiveConcentration" 5e+19)
 (sdedr:define-constant-profile-region "constant_source_doping_placement" "constant_source_doping" "source_n")
 ;; body doping:
-(sdedr:define-constant-profile "constant_body_doping" "BoronActiveConcentration" 5e+19) ;5e+19
+(sdedr:define-constant-profile "constant_body_doping" "BoronActiveConcentration" 4e+19) ;5e+19 ;4.5e19
 (sdedr:define-constant-profile-region "constant_body_doping_placement" "constant_body_doping" "body")
-;(sdedr:define-constant-profile "constant_body2_doping" "BoronActiveConcentration" 5e+19) ;5e+19
-;(sdedr:define-constant-profile-region "constant_body_doping_placement" "constant_body2_doping" "body2")
 
 ;; define contacts
 (sdegeo:define-contact-set "Gate_contact" 4  (color:rgb 1 0 0 ) "##" )
